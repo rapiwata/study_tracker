@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:study_tracker/widgets/drawer.dart';
+import 'package:study_tracker/pages/form.dart';
+
+
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -28,6 +32,7 @@ class MyHomePage extends StatelessWidget {
           'Study Tracker',
         ),
       ),
+      drawer: const DrawerMenu(), // Menambahkan drawer pada halaman
       body: SingleChildScrollView(
         // Widget wrapper yang dapat discroll
         child: Padding(
@@ -93,14 +98,14 @@ class MyHomePage extends StatelessWidget {
                       ),
                     ),
                     Material(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      child: InkWell(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        child: InkWell(
                         onTap: () {
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(const SnackBar(
-                                content: Text(
-                                    "Kamu telah menekan tombol Tambah Studi!")));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyFormPage()),
+                        );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
