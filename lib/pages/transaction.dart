@@ -74,8 +74,8 @@ Widget build(BuildContext context) {
                                     boxShadow: [
                                     BoxShadow(
                                         color:
-                                            snapshot.data![index].fields.type ==
-                                                    "Pemasukan"
+                                            snapshot.data![index].fields.subject ==
+                                                    "Tugas Harian"
                                                 ? Colors.blueAccent
                                                 : Colors.red,
                                         blurRadius: 2.0)
@@ -92,7 +92,7 @@ Widget build(BuildContext context) {
                                     ),
                                     ),
                                     const SizedBox(height: 10),
-                                    Text("${snapshot.data![index].fields.amount}"),
+                                    Text("${snapshot.data![index].fields.lesson}"),
                                 ],
                                 ),
                             ));
