@@ -1,6 +1,10 @@
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:study_tracker/pages/transaction.dart';
 import 'package:study_tracker/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert' as convert;
 
 
 
@@ -16,10 +20,12 @@ class _MyFormPageState extends State<MyFormPage> {
     String _namaStudi = "";
     String tipeStudi = 'wajib';
     List<String> listTipeStudi = ['wajib', 'minat'];
-    double jumlahStudi = 0;
+    int jumlahStudi = 0;
     String _deskripsiStudi = "";
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    
     return Scaffold(
         appBar: AppBar(
           title: Text('Form'),
@@ -108,13 +114,13 @@ class _MyFormPageState extends State<MyFormPage> {
                     // Menambahkan behavior saat jumlah diketik
                     onChanged: (String? value) {
                       setState(() {
-                        jumlahStudi = double.parse(value!);
+                        jumlahStudi = int.parse(value!);
                       });
                     },
                     // Menambahkan behavior saat data disimpan
                     onSaved: (String? value) {
                       setState(() {
-                        jumlahStudi = double.parse(value!);
+                        jumlahStudi = int.parse(value!);
                       });
                     },
                     // Validator sebagai validasi form
@@ -169,43 +175,33 @@ class _MyFormPageState extends State<MyFormPage> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            elevation: 15,
-                            child: Container(
-                              child: ListView(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 20),
-                                shrinkWrap: true,
-                                children: <Widget>[
-                                  Center(child: const Text('Informasi Data')),
-                                  SizedBox(height: 20),
-                                  Text('Nama Studi: $_namaStudi'),
-                                  Text('Tipe Studi: $tipeStudi'),
-                                  Text(
-                                      'Jumlah Studi: ${jumlahStudi.toStringAsFixed(2)}'),
-                                  Text(
-                                      'Deskripsi Studi: $_deskripsiStudi'),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Kembali'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
+                      final response = await request.postJson(
+                        "",
+                    convert.jsonEncode(<String, String>{
+                      'name': _namaStudi,
+                      'type': tipeStudi,
+                      'amount': jumlahStudi.toString(),
+                      'description': _deskripsiStudi
+                    }));
+                    if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                              content: Text("Studi baru berhasil disimpan!"),
+                              ));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const TransactionPage()),
+                              );
+                          } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                  content:
+                                      Text("Terdapat kesalahan, silakan coba lagi."),
+                              ));
+                          }
+                      }
                   },
                 ),
               ]),

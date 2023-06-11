@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:study_tracker/pages/login.dart';
+import 'package:study_tracker/pages/transaction.dart';
 import 'package:study_tracker/widgets/drawer.dart';
 import 'package:study_tracker/pages/form.dart';
-
-
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -66,12 +69,11 @@ class MyHomePage extends StatelessWidget {
                       child: InkWell(
                         // Area responsive terhadap sentuhan
                         onTap: () {
-                          // Memunculkan SnackBar ketika diklik
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(const SnackBar(
-                                content: Text(
-                                    "Kamu telah menekan tombol Lihat Riwayat Studi!")));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TransactionPage()),
+                          );
                         },
                         child: Container(
                           // Container untuk menyimpan Icon dan Text
@@ -89,7 +91,9 @@ class MyHomePage extends StatelessWidget {
                                 Text(
                                   "Lihat Study Tracker",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
                                 ),
                               ],
                             ),
@@ -98,14 +102,14 @@ class MyHomePage extends StatelessWidget {
                       ),
                     ),
                     Material(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        child: InkWell(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      child: InkWell(
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const MyFormPage()),
-                        );
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
@@ -122,7 +126,9 @@ class MyHomePage extends StatelessWidget {
                                 Text(
                                   "Tambah Studi",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
                                 ),
                               ],
                             ),
@@ -133,12 +139,27 @@ class MyHomePage extends StatelessWidget {
                     Material(
                       color: Color.fromARGB(255, 0, 0, 0),
                       child: InkWell(
-                        onTap: () {
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(const SnackBar(
-                                content:
-                                    Text("Kamu telah menekan tombol Logout!")));
+                        onTap: () async {
+                          final response = await request.logout(
+                              // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                              "https://darling-display-giy.domcloud.io/");
+                          String message = response["message"];
+                          print(response["message"]);
+                          if (response['status']) {
+                            String uname = response["username"];
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("$message Sampai jumpa, $uname."),
+                            ));
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("$message"),
+                            ));
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
@@ -157,7 +178,9 @@ class MyHomePage extends StatelessWidget {
                                 Text(
                                   "Logout",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
                                 ),
                               ],
                             ),
@@ -168,9 +191,8 @@ class MyHomePage extends StatelessWidget {
                   ],
                 ),
               ],
-            )
-          ),
-        ),
-      );
-    }
+            )),
+      ),
+    );
   }
+}
