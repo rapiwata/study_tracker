@@ -178,7 +178,7 @@ class _MyFormPageState extends State<MyFormPage> {
                   onPressed: () async{
                     if (_formKey.currentState!.validate()) {
                       final response = await request.postJson(
-                        "",
+                        "https://darling-display-giy.domcloud.io/study_tracker/create-flutter/",
                     convert.jsonEncode(<String, String>{
                       'name': _namaStudi,
                       'type': tipeStudi,

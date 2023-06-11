@@ -1,3 +1,8 @@
+fix logout problem:
+- flutter pub get
+- fix url (kurang "/")
+- change home in main.dart to LoginApp()
+
 Soal-Soal Tugas Individu
 
 

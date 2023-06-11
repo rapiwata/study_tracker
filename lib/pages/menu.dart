@@ -142,7 +142,7 @@ class MyHomePage extends StatelessWidget {
                         onTap: () async {
                           final response = await request.logout(
                               // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                              "https://darling-display-giy.domcloud.io/");
+                              "https://darling-display-giy.domcloud.io/auth/logout/");
                           String message = response["message"];
                           print(response["message"]);
                           if (response['status']) {
