@@ -18,7 +18,7 @@ class _TransactionPageState extends State<TransactionPage> {
 Future<List<TransactionRecord>> fetchTransactionRecord() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://localhost:8000/study_tracker/json/');
+        'https://darling-display-giy.domcloud.io/study_tracker/json/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},

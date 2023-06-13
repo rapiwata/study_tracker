@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                 // Cek kredensial
                                 // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-                                final response = await request.login("http://localhost:8000/auth/login/", {
+                                final response = await request.login("https://darling-display-giy.domcloud.io/auth/login/", {
                                 'username': username,
                                 'password': password,
                                 });
