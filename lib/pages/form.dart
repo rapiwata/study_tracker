@@ -18,8 +18,9 @@ class MyFormPage extends StatefulWidget {
 class _MyFormPageState extends State<MyFormPage> {
     final _formKey = GlobalKey<FormState>();
     String _namaStudi = "";
-    String tipeStudi = 'wajib';
-    List<String> listTipeStudi = ['wajib', 'minat'];
+    String tipeStudi = 'Tugas Harian';
+    List<String> listTipeStudi = ['Tugas Harian', 'Tugas Akhir','ujian'];
+    String subject = '';
     int jumlahStudi = 0;
     String _deskripsiStudi = "";
   @override
@@ -178,11 +179,12 @@ class _MyFormPageState extends State<MyFormPage> {
                   onPressed: () async{
                     if (_formKey.currentState!.validate()) {
                       final response = await request.postJson(
-                        "https://darling-display-giy.domcloud.io/study_tracker/create-flutter/",
+                        "http://localhost:8000/study_tracker/create-flutter/",
                     convert.jsonEncode(<String, String>{
                       'name': _namaStudi,
-                      'type': tipeStudi,
-                      'amount': jumlahStudi.toString(),
+                      'lesson': tipeStudi,
+                      'subject': subject,
+                      'progress':jumlahStudi.toString(),
                       'description': _deskripsiStudi
                     }));
                     if (response['status'] == 'success') {
