@@ -20,7 +20,7 @@ class _MyFormPageState extends State<MyFormPage> {
     String _namaStudi = "";
     String tipeStudi = 'Tugas Harian';
     List<String> listTipeStudi = ['Tugas Harian', 'Tugas Akhir','ujian'];
-    String subject = '';
+    String subject = 'subject';
     int jumlahStudi = 0;
     String _deskripsiStudi = "";
   @override
@@ -68,6 +68,41 @@ class _MyFormPageState extends State<MyFormPage> {
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
                         return 'Nama studi tidak boleh kosong!';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  // Menggunakan padding sebesar 8 pixels
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "Kalkulus",
+                      labelText: "Nama Subjek",
+                      // Menambahkan icon agar lebih intuitif
+                      icon: const Icon(Icons.edit_note),
+                      // Menambahkan circular border agar lebih rapi
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    // Menambahkan behavior saat nama diketik
+                    onChanged: (String? value) {
+                      setState(() {
+                        subject = value!;
+                      });
+                    },
+                    // Menambahkan behavior saat data disimpan
+                    onSaved: (String? value) {
+                      setState(() {
+                        subject = value!;
+                      });
+                    },
+                    // Validator sebagai validasi form
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama subjek tidak boleh kosong!';
                       }
                       return null;
                     },
